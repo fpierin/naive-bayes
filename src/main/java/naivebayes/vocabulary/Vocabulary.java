@@ -8,7 +8,7 @@ public class Vocabulary {
 
 	private Map<String, Integer> frequencyMap = new HashMap<String, Integer>();
 	private int total = 0;
-	
+
 	public Vocabulary() {
 	}
 
@@ -17,7 +17,7 @@ public class Vocabulary {
 		getFrequencyMap().put(value, newValue);
 		total++;
 	}
-	
+
 	public void remove(final String value) {
 		if (getFrequencyMap().containsKey(value)) {
 			final int keyValue = getFrequencyMap().get(value);
@@ -29,7 +29,7 @@ public class Vocabulary {
 		}
 		total--;
 	}
-	
+
 	public int frequencyOf(final String value) {
 		if (getFrequencyMap().containsKey(value)) {
 			return getFrequencyMap().get(value);
@@ -40,7 +40,7 @@ public class Vocabulary {
 	public boolean isEmpty() {
 		return frequencyMap.isEmpty();
 	}
-	
+
 	private void calculateTotalOf(final Map<String, Integer> frequencyMap) {
 		final Collection<Integer> values = frequencyMap.values();
 		total = 0;
@@ -48,15 +48,15 @@ public class Vocabulary {
 			total += value;
 		}
 	}
-	
+
 	public boolean contains(final String value) {
 		return frequencyMap.containsKey(value);
 	}
-	
+
 	public Map<String, Integer> getFrequencyMap() {
 		return frequencyMap;
 	}
-	
+
 	public void setFrequencyMap(final Map<String, Integer> frequencyMap) {
 		this.frequencyMap = frequencyMap;
 		calculateTotalOf(frequencyMap);
@@ -68,6 +68,10 @@ public class Vocabulary {
 
 	public void setTotal(final int total) {
 		this.total = total;
+	}
+
+	public static Vocabulary fromFile(final String string) {
+		return new Vocabulary();
 	}
 
 }

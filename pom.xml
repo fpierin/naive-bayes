@@ -3,4 +3,48 @@
   <groupId>naive-bayes</groupId>
   <artifactId>naive-bayes</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
+  	<properties>
+		<!-- Project configuration -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.compatibility.version>1.7</java.compatibility.version>
+		<javaee.version>7</javaee.version>
+
+		<junit.version>4.11</junit.version>
+		<mockito.version>1.9.5</mockito.version>
+
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven.jetty.plugin.version>6.1.26</maven.jetty.plugin.version>
+  	</properties>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<compilerVersion>${java.compatibility.version}</compilerVersion>
+					<debug>true</debug>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>${java.compatibility.version}</source>
+					<target>${java.compatibility.version}</target>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<developers>
+		<developer>
+			<id>fpierin</id>
+			<email>felipe.pierin@yahoo.com.br</email>
+			<name>Felipe Pierin</name>
+			<timezone>-3</timezone>
+			<properties>
+				<skype>felipe.pierin</skype>
+			</properties>
+		</developer>
+	</developers>
+
 </project>

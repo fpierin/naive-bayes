@@ -12,4 +12,6 @@ public interface ClassificationContainer {
 
 	Classification remove(int i);
 
+	boolean add(Classification classification);
+
 }
