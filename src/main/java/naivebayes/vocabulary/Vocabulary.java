@@ -2,7 +2,9 @@ package naivebayes.vocabulary;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 public class Vocabulary {
 
@@ -16,6 +18,14 @@ public class Vocabulary {
 		final int newValue = getFrequencyMap().containsKey(value) ? getFrequencyMap().get(value) + 1 : 1;
 		getFrequencyMap().put(value, newValue);
 		total++;
+	}
+
+	public void add(final List<String> words) {
+		if (words != null && !words.isEmpty()) {
+			for (final String string : words) {
+				add(string);
+			}
+		}
 	}
 
 	public void remove(final String value) {
@@ -70,8 +80,18 @@ public class Vocabulary {
 		this.total = total;
 	}
 
-	public static Vocabulary fromFile(final String string) {
-		return new Vocabulary();
+	public static Vocabulary fromFile(final String string) throws Exception {
+		final Vocabulary vocabulary = new Vocabulary();
+		final List<String> words = VocabularyGenerator.extractWordsFromFile(string);
+		vocabulary.add(words);
+		return vocabulary;
+	}
+
+	public static Vocabulary fromString(final String string) {
+		final Vocabulary vocabulary = new Vocabulary();
+		final List<String> words = VocabularyGenerator.wordsFromString(string);
+		vocabulary.add(words);
+		return vocabulary;
 	}
 
 }

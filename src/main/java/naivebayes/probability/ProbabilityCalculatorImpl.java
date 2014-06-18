@@ -11,25 +11,30 @@ import naivebayes.vocabulary.Vocabulary;
 
 public class ProbabilityCalculatorImpl implements ProbabilityCalculator {
 
+	@Override
 	public double calculate(final Vocabulary vocabulary, final Classification classification) {
-		double probabilityValue = 0.0;
-		final double fit = 0.5;
+		double probabilityValue = log(classification.getPriory());
 		if (vocabulary != null && !vocabulary.isEmpty()) {
 			final Set<Entry<String, Integer>> entrySet = vocabulary.getFrequencyMap().entrySet();
 			final Iterator<Entry<String, Integer>> iterator = entrySet.iterator();
 			while (iterator.hasNext()) {
 				final Entry<String, Integer> word = iterator.next();
-				final double laplaceValue = laplace(classification.getVocabulary(), word.getKey(), vocabulary.getTotal(), fit);
-				probabilityValue += log(laplaceValue); 
+				final Vocabulary classificationVocabulary = classification.getVocabulary();
+				final String theWord = word.getKey().trim();
+				if (theWord != null && theWord.length() > 0) {
+					final int vocabularyTotal = vocabulary.getTotal();
+					final double laplaceValue = laplace(classificationVocabulary, theWord, vocabularyTotal, 0.001);
+					probabilityValue += vocabulary.frequencyOf(theWord) * log(laplaceValue);
+				}
 			}
 		}
 		return probabilityValue;
 	}
 
 	private double laplace(final Vocabulary vocabulary, final String term, final int flush, final double fit) {
-		final double laplaceResult = 0;
+		final double laplaceResult = 0.0;
 		final double laplaceBase = vocabulary.getTotal() + flush;
-		if (laplaceBase != 0 && vocabulary.contains(term)) {
+		if (laplaceBase != 0) {
 			return (vocabulary.frequencyOf(term) + fit) / laplaceBase;
 		}
 		return laplaceResult;

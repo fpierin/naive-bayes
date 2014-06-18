@@ -16,6 +16,14 @@
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<maven.jetty.plugin.version>6.1.26</maven.jetty.plugin.version>
   	</properties>
+  	
+  	<dependencies>
+  		<dependency>
+  			<groupId>junit</groupId>
+  			<artifactId>junit</artifactId>
+  			<version>${junit.version}</version>
+  		</dependency>
+  	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>

@@ -1,7 +1,12 @@
 package naivebayes.core;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import naivebayes.classification.Classification;
 import naivebayes.classification.ClassificationContainer;
@@ -14,26 +19,41 @@ public class NaiveBayesImpl implements NaiveBayes {
 	private final ProbabilityCalculator probabilityCalculator;
 
 	public NaiveBayesImpl(final ClassificationContainer classificationList, final ProbabilityCalculator probabilityCalculator) {
-		if (classificationList == null || classificationList.isEmpty()) {
-			throw new IllegalArgumentException("Naive Bayes classification list is null");
-		}
 		this.classificationList = classificationList;
 		this.probabilityCalculator = probabilityCalculator;
 	}
 
-	public String classify(final List<String> bagOfWords) {
+	@Override
+	public Map<String, Double> classify(final List<String> bagOfWords) {
+		double withProbabilitySum = 0.0;
 		final List<Classification> classifications = classificationList.getClassifications();
-		String resultClassification = null;
-		double resultProbability = Double.NEGATIVE_INFINITY;
+		final Map<String, Double> result = new HashMap<>();
 		for (int i = 0; i < classifications.size(); i++) {
 			final Classification classification = classificationList.get(i);
-			final double classificationProbability = probabilityCalculator.calculate(from(bagOfWords), classification);
-			if (classificationProbability > resultProbability) {
-				resultProbability = classificationProbability;
-				resultClassification = classification.getName();
+			final double probabilityLog = probabilityCalculator.calculate(from(bagOfWords), classification);
+			withProbabilitySum += probabilityLog;
+			result.put(classification.getName(), probabilityLog);
+		}
+		return normalization(result, withProbabilitySum);
+	}
+
+	/**
+	 * @param result
+	 * @param withProbabilitySum
+	 * @return
+	 */
+	private Map<String, Double> normalization(final Map<String, Double> result, final double withProbabilitySum) {
+		if (withProbabilitySum != 0) {
+			final Set<Entry<String, Double>> entrySet = result.entrySet();
+			final Iterator<Entry<String, Double>> iterator = entrySet.iterator();
+			while (iterator.hasNext()) {
+				final Entry<String, Double> next = iterator.next();
+				final double realProbability = 1 - next.getValue() / withProbabilitySum;
+				result.put(next.getKey(), realProbability);
+				next.getValue();
 			}
 		}
-		return resultClassification;
+		return result;
 	}
 
 	private Vocabulary from(final List<String> words) {

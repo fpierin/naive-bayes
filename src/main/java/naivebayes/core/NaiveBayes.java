@@ -1,9 +1,10 @@
 package naivebayes.core;
 
 import java.util.List;
+import java.util.Map;
 
 public interface NaiveBayes {
-	
-	String classify(List<String> bagOfWords);
+
+	Map<String, Double> classify(List<String> bagOfWords);
 
 }
